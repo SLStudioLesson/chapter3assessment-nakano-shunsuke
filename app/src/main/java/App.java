@@ -15,9 +15,29 @@ public class App {
             System.out.print("Select (1/2): ");
             String choice = reader.readLine();
             
+            // DataHandler型の変数を作る
+            DataHandler dataHandler;
+            switch (Integer.parseInt(choice)) {
+                case 1:
+                    dataHandler = new CSVDataHandler();
+                    break;
+                case 2:
+                    dataHandler = new JSONDataHandler();
+                    break;
+                default:
+                    dataHandler = new CSVDataHandler();
+                    break;
+            }
 
+            // MainMenuにデータを渡す
+            mainMenu(dataHandler);
         } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
+    }
+    // RecipeUIにデータを渡すメソッド
+    public static void mainMenu(DataHandler dataHandler) {
+        RecipeUI recipeMenu = new RecipeUI(dataHandler);
+        recipeMenu.displayMenu();
     }
 }

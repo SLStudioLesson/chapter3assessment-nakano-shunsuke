@@ -34,19 +34,18 @@ public class CSVDataHandler implements DataHandler {
             String line;
             // レシピ名
             String recipeName;
-            // 具材
             while ((line = reader.readLine()) != null) {
-                ArrayList<Ingredient> recipeIngredients = new ArrayList<>();
                 String[] parts = line.split(",", 2);
                 // レシピ名
                 recipeName = parts[0];
                 // 具材
                 String[] ingredients = parts[1].split(",");
+                ArrayList<Ingredient> recipeIngredients = new ArrayList<>();
                 
                 // 具材をひとつづつIngredientに変換してrecipeIngredientsに追加する
                 for(String ingredient : ingredients) {
-                    Ingredient ingredientName = new Ingredient(ingredient);
-                    recipeIngredients.add(ingredientName);
+                    // Ingredient ingredientName = new Ingredient(ingredient);
+                    recipeIngredients.add(new Ingredient(ingredient));
                 }
                 recipes.add(new Recipe(recipeName, recipeIngredients));
             }
@@ -59,14 +58,14 @@ public class CSVDataHandler implements DataHandler {
 
     public void writeData(Recipe recipe) throws IOException {
         // ファイルにアクセス
-        try (PrintWriter print = new PrintWriter(new BufferedWriter(new FileWriter(filePath)))) {
+        try (PrintWriter print = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)))) {
             // レシピ名と具材の結合結果
             String ingredientsResult = recipe.getName();
             
             // 受け取ったレシピをカンマでつなぐ
             ArrayList<Ingredient> recipeIngredients = recipe.getIngredients();
-            for (Ingredient recipeIngredient : recipeIngredients) {
-                ingredientsResult += ", " + recipeIngredient;
+            for (int i = 0; i < recipeIngredients.size(); i++) {
+                ingredientsResult += ", " + recipeIngredients.get(i).getName();
             }
             // ファイルに書き込む
             print.println(ingredientsResult);
@@ -74,7 +73,6 @@ public class CSVDataHandler implements DataHandler {
         } catch (IOException e) {
             System.out.println("Failed to add new recipe: " + e.getMessage());
         }
-
     }
 
     public ArrayList<Recipe> searchData(String keyword) throws IOException {

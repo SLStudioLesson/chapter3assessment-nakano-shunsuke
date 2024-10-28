@@ -101,6 +101,7 @@ public class RecipeUI {
                 // doneがあるか確認しあればループ終了
                 if (ingredientName.equals("done")) {
                     done = false;
+                    break;
                 }
 
                 Ingredient ingredient = new Ingredient(ingredientName);
